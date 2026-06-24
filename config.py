@@ -5,11 +5,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent
 
-DUR_DIR = (
-    BASE_DIR
-    / "건강보험심사평가원_의약품안전사용서비스(DUR) 의약품 목록_20260601 (1)"
-    / "건강보험심사평가원_의약품안전사용서비스(DUR) 의약품 목록_202606"
-)
+DUR_DIR = BASE_DIR
 
 CSV_ELDERLY         = DUR_DIR / "의약품안전사용서비스(DUR)_노인주의 품목리스트 2026.6.csv"
 CSV_ANTIPYRETIC     = DUR_DIR / "의약품안전사용서비스(DUR)_노인주의(해열진통소염제) 품목리스트 2026.6.csv"
