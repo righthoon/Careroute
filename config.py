@@ -9,7 +9,7 @@ DUR_DIR = BASE_DIR
 
 CSV_ELDERLY         = DUR_DIR / "의약품안전사용서비스(DUR)_노인주의 품목리스트 2026.6.csv"
 CSV_ANTIPYRETIC     = DUR_DIR / "의약품안전사용서비스(DUR)_노인주의(해열진통소염제) 품목리스트 2026.6.csv"
-CSV_CONTRAINDICATED = DUR_DIR / "의약품안전사용서비스(DUR)_병용금기 품목리스트 2026.6.csv"
+CSV_CONTRAINDICATED = DUR_DIR / "병용금기_sample.csv"
 XLS_EFFICACY        = DUR_DIR / "OpenData_PotOpenDurIngr_G20260622(효능군중복).xls"
 
 IMAGE_DIR   = BASE_DIR / "약봉투 사진"
