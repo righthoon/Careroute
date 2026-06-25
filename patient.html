@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보건소 EMR - 환자 상세 정보</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 기본 스타일 설정 */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        /* 상단 헤더 영역 */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .patient-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .patient-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .badge-group { background-color: #ffe4e6; color: #e11d48; } /* 집중관리군 색상 */
+        .badge-risk { background-color: #ffedd5; color: #ea580c; } /* Moderate 위험도 색상 */
+        .patient-details {
+            color: #6b7280;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        /* AI 인사이트 영역 */
+        .ai-insight {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+        .ai-insight h3 { margin-top: 0; display: flex; align-items: center; gap: 8px;}
+        .ai-insight p { font-size: 16px; line-height: 1.5; margin-bottom: 0;}
+        /* 레이아웃 (그래프와 사이드바) */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+        /* 차트 영역 */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        /* 기저질환 태그 */
+        .condition-tag {
+            display: inline-block;
+            background-color: #f1f5f9;
+            color: #475569;
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin: 0 8px 8px 0;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .sidebar-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        @media (max-width: 768px) {
+            .main-content { grid-template-columns: 1fr; }
+            .header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card header">
+        <div>
+            <div class="patient-info">
+                <h1 class="patient-name">홍길동</h1>
+                <span class="badge badge-group">집중관리군</span>
+            </div>
+            <div class="patient-details">
+                남성, 78세 | 충청남도 천안시 서북구 성거읍
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <div style="font-size: 14px; color: #6b7280; margin-bottom: 5px;">임상적 위험도</div>
+            <div class="badge badge-risk" style="font-size: 20px;">Moderate</div>
+        </div>
+    </div>
+
+    <div class="card ai-insight">
+        <h3>💡 AI IoT 맞춤 분석 결과</h3>
+        <p>"혈당과 혈압이 지속적으로 상승하고 있어 예의주시가 필요해요. Stroke(뇌졸중) 및 CHD 위험도가 85%로 예측됩니다."</p>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <h3 style="margin-top: 0;">혈압 추이 (최근 5일)</h3>
+            <div class="chart-container">
+                <canvas id="bpChart"></canvas>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 20px 0;">
+            <h3 style="margin-top: 0;">혈당 추이 (최근 5일)</h3>
+            <div class="chart-container">
+                <canvas id="glucoseChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-top: 0;">기저질환 및 특이사항</h3>
+            <div>
+                <span class="condition-tag">독거노인</span>
+                <span class="condition-tag">차상위계층</span>
+                <span class="condition-tag">고혈압</span>
+                <span class="condition-tag">AI IoT 참여자</span>
+            </div>
+            
+            <h3 style="margin-top: 30px; border-top: 1px solid #f1f5f9; padding-top: 20px;">관리 상세</h3>
+            <div class="sidebar-item">
+                <span style="color: #6b7280;">분류 체계</span>
+                <strong>집중관리군 (3개월 이내 8회)</strong>
+            </div>
+            <div class="sidebar-item">
+                <span style="color: #6b7280;">최근 방문일</span>
+                <strong>2024-05-01</strong>
+            </div>
+            <div class="sidebar-item">
+                <span style="color: #6b7280;">데이터 연동 상태</span>
+                <strong style="color: #10b981;">정상 수집 중</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 공통 차트 설정
+    Chart.defaults.font.family = "'Malgun Gothic', sans-serif";
+    Chart.defaults.color = '#6b7280';
+
+    const labels = ['05-01', '05-02', '05-03', '05-04', '05-05'];
+
+    // 1. 혈압 차트 그리기
+    const bpCtx = document.getElementById('bpChart').getContext('2d');
+    new Chart(bpCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: '수축기 혈압',
+                    data: [135, 142, 148, 155, 152],
+                    borderColor: '#ef4444', // 빨간색
+                    backgroundColor: '#ef4444',
+                    borderWidth: 3,
+                    tension: 0.3
+                },
+                {
+                    label: '이완기 혈압',
+                    data: [85, 88, 92, 95, 94],
+                    borderColor: '#f97316', // 주황색
+                    backgroundColor: '#f97316',
+                    borderWidth: 3,
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' } },
+            scales: { y: { suggestedMin: 60, suggestedMax: 180 } }
+        }
+    });
+
+    // 2. 혈당 차트 그리기
+    const glucoseCtx = document.getElementById('glucoseChart').getContext('2d');
+    new Chart(glucoseCtx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: '혈당량 (mg/dL)',
+                    data: [110, 125, 140, 138, 145],
+                    borderColor: '#3b82f6', // 파란색
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 3,
+                    fill: true, // 영역 색칠
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'top' } },
+            scales: { y: { suggestedMin: 80, suggestedMax: 180 } }
+        }
+    });
+</script>
+
+</body>
+</html>
