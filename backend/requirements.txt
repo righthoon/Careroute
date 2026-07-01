@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+torch
+transformers==4.46.3
+accelerate==1.1.1
+numpy
+pandas
+pyngrok
+hf_transfer
